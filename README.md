@@ -2,13 +2,9 @@
 
 ## Description
 
-A collection of helper functions for mathematical calculations. These functions are commonly used in solving [Project Euler](https://projecteuler.net/) problems.
+A collection of helper functions for mathematical calculations, mostly concerned with prime numbers and basic algebra on natural numbers.
 
-![ProjectEulerProfile](https://projecteuler.net/profile/Luke943.png)
-
-*Note: These are NOT solutions to any particular problem.*
-
-## Module Requirements
+## Module Dependencies
 
 To improve execution speed and memory usage, many of the functions take advantage of either:
 - [Numpy](https://numpy.org/)
@@ -37,8 +33,16 @@ The functions using native Python and Numpy are designed to be compatible with t
 
 When dealing with large enough values, Numba can significantly improve execution speed compared to vanilla Python.
 
-To take advantage of this in your script, use the `@numba.njit` decorator on the desired function.
+To take advantage of this in your script, use the `numba.njit` decorator on the desired function.
 
 ## Performance Test
 
 ***TODO - speed and memory test***
+
+## Motivation
+
+The functions contained here are commonly used in solving [Project Euler](https://projecteuler.net/) problems.
+
+![ProjectEulerProfile](https://projecteuler.net/profile/Luke943.png)
+
+*Note: These are NOT solutions to any particular problem.*
