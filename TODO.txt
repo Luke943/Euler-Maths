@@ -1,0 +1,5 @@
+- finish test file
+- put results in readme
+- add example usage in readme
+- restructure package (like example_package)
+- upload to pypi

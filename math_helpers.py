@@ -43,7 +43,7 @@ def prime_sieve_np(N: int) -> np.ndarray:
 
 def prime_sieve_bitarray(N: int) -> iter:
     """
-    Returns list of primes < N using Bitarray.
+    Returns iterable of primes < N using Bitarray.
     Memory usage ~N bits.
     """
     is_prime = bitarray.bitarray(N)
