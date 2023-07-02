@@ -12,16 +12,16 @@ import numpy as np
 def prime_sieve(N: int) -> list:
     """
     Returns list of primes < N.
-    Memory usages ~8*N bytes.
+    Memory usage ~8*N bytes.
     """
     is_prime = [1] * N
     is_prime[0] = 0
     is_prime[1] = 0
     for j in range(4, N, 2):
         is_prime[j] = 0
-    for i in range(3, int(N**0.5) + 1, 2):
+    for i in range(3, int(N ** 0.5) + 1, 2):
         if is_prime[i]:
-            for j in range(i*i, N, 2*i):
+            for j in range(i * i, N, 2 * i):
                 is_prime[j] = 0
     return [p for p, b in enumerate(is_prime) if b]
 
@@ -34,10 +34,10 @@ def prime_sieve_np(N: int) -> np.ndarray:
     """
     is_prime = np.ones(N, dtype=np.int8)
     is_prime[:2] = 0
-    is_prime[4:: 2] = 0
-    for i in range(3, int(N**0.5) + 1, 2):
+    is_prime[4::2] = 0
+    for i in range(3, int(N ** 0.5) + 1, 2):
         if is_prime[i]:
-            is_prime[i*i:: 2*i] = 0
+            is_prime[i * i :: 2 * i] = 0
     return is_prime.nonzero()[0]
 
 
@@ -48,12 +48,12 @@ def prime_sieve_bitarray(N: int) -> iter:
     """
     is_prime = bitarray.bitarray(N)
     is_prime.setall(True)
-    is_prime[: 2] = False
-    is_prime[4:: 2] = False
+    is_prime[:2] = False
+    is_prime[4::2] = False
     for i in range(3, math.isqrt(N) + 1, 2):
         if is_prime[i]:
-            is_prime[i*i:: 2*i] = False
-    return is_prime.itersearch(bitarray.bitarray('1'))
+            is_prime[i * i :: 2 * i] = False
+    return is_prime.itersearch(bitarray.bitarray("1"))
 
 
 def prime_factor_sieve(N: int) -> np.ndarray:
@@ -82,7 +82,7 @@ def is_prime(n: int) -> bool:
     if n % 2 == 0 or n % 3 == 0:
         return False
     i = 5
-    while i**2 <= n:
+    while i ** 2 <= n:
         if n % i == 0 or n % (i + 2) == 0:
             return False
         i += 6
@@ -111,14 +111,14 @@ def is_prime_MR(n: int) -> bool:
     while d % 2 == 0:
         d >>= 1
         s += 1
-    assert(2**s * d == n - 1)
+    assert 2 ** s * d == n - 1
 
     def trial_composite(a: int) -> bool:
         """Helper for Miller-Rabin test."""
         if pow(a, d, n) == 1:
             return False
         for i in range(s):
-            if pow(a, 2**i * d, n) == n - 1:
+            if pow(a, 2 ** i * d, n) == n - 1:
                 return False
         return True  # n definitely composite
 
@@ -145,8 +145,7 @@ def is_prime_MR(n: int) -> bool:
     elif n < 3317044064679887385961981:
         testCases = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
     else:
-        testCases = [random.randrange(2, n)
-                     for i in range(8)]  # probablistic version
+        testCases = [random.randrange(2, n) for i in range(8)]  # probablistic version
 
     for a in testCases:
         if trial_composite(a):
@@ -161,16 +160,16 @@ def euler_totient_sieve(N: int) -> list:
     for i in range(2, N):
         if phi[i] == 0:
             phi[i] = i - 1
-            for j in range(2*i, N, i):
+            for j in range(2 * i, N, i):
                 if phi[j] == 0:
                     phi[j] = j
-                phi[j] = (i-1) * phi[j] // i
+                phi[j] = (i - 1) * phi[j] // i
     return phi
 
 
 def euler_totient(n: int, prime_factors: iter) -> int:
     """Given n and its prime factors, calculates Euler's totient function."""
-    return int(n * math.prod(1 - 1/p for p in prime_factors))
+    return int(n * math.prod(1 - 1 / p for p in prime_factors))
 
 
 def mobius_array(N: int) -> np.ndarray:
@@ -181,20 +180,20 @@ def mobius_array(N: int) -> np.ndarray:
         if not prime[i]:
             continue
         mobius[i] = -1
-        prime[2*i:: i] = 0
-        mobius[2*i:: i] *= -1
-        i_sq = i*i
-        mobius[i_sq:: i_sq] = 0
+        prime[2 * i :: i] = 0
+        mobius[2 * i :: i] *= -1
+        i_sq = i * i
+        mobius[i_sq::i_sq] = 0
     return mobius
 
 
 def square_free(N: int) -> int:
     """Count of square free numbers <= N"""
-    sqrt_N = int(N**0.5)
+    sqrt_N = int(N ** 0.5)
     mobius = mobius_array(sqrt_N)
     s = 0
     for i in range(1, sqrt_N + 1):
-        s += mobius[i] * (N // (i*i))
+        s += mobius[i] * (N // (i * i))
     return s
 
 
