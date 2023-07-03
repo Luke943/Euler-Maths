@@ -9,10 +9,11 @@ import bitarray
 import numpy as np
 
 
-def prime_sieve(N: int) -> list:
+def _primes(N: int) -> list:
     """
     Returns list of primes < N.
     Memory usage ~8*N bytes.
+    Defunct: Slower and more memory intensive than Numpy version.
     """
     is_prime = [1] * N
     is_prime[0] = 0
@@ -26,13 +27,13 @@ def prime_sieve(N: int) -> list:
     return [p for p, b in enumerate(is_prime) if b]
 
 
-def prime_sieve_np(N: int) -> np.ndarray:
+def primes(N: int) -> np.ndarray:
     """
     Returns array of primes < N using Numpy.
     Numba improves speed for N > ~10**8.
     Memory usage ~N bytes.
     """
-    is_prime = np.ones(N, dtype=np.int8)
+    is_prime = np.ones(N, dtype=np.uint8)
     is_prime[:2] = 0
     is_prime[4::2] = 0
     for i in range(3, int(N ** 0.5) + 1, 2):
@@ -41,7 +42,7 @@ def prime_sieve_np(N: int) -> np.ndarray:
     return is_prime.nonzero()[0]
 
 
-def prime_sieve_bitarray(N: int) -> iter:
+def primes_iter(N: int) -> iter:
     """
     Returns iterable of primes < N using Bitarray.
     Memory usage ~N bits.
@@ -56,16 +57,19 @@ def prime_sieve_bitarray(N: int) -> iter:
     return is_prime.itersearch(bitarray.bitarray("1"))
 
 
-def prime_factor_sieve(N: int) -> np.ndarray:
-    """Returns array of unique prime factors for each number < N."""
+def prime_factors(N: int) -> np.ndarray:
+    """
+    Returns array of unique prime factors for each number < N.
+    Designed to work for N < 2^31.
+    """
     small_primes = (2, 3, 5, 7, 11, 13, 17, 19, 23, 29)
     prod = 1
-    for count, i in enumerate(small_primes):
+    for max_count, i in enumerate(small_primes):
         prod *= i
         if prod > N:
             break
-    factor_counts = np.zeros(N, np.int8)
-    prime_factors = np.zeros((N, count), np.int32)
+    factor_counts = np.zeros(N, np.uint8)
+    prime_factors = np.zeros((N, max_count), np.int32)
     for i in range(2, N):
         if factor_counts[i]:
             continue
@@ -75,8 +79,11 @@ def prime_factor_sieve(N: int) -> np.ndarray:
     return prime_factors
 
 
-def is_prime(n: int) -> bool:
-    """Primality test using 6k+-1 optimization."""
+def _is_prime_basic(n: int) -> bool:
+    """
+    Basic primality test using 6k+-1 optimization.
+    Recommended up to n < 10^6.
+    """
     if n <= 3:
         return n > 1
     if n % 2 == 0 or n % 3 == 0:
@@ -89,23 +96,21 @@ def is_prime(n: int) -> bool:
     return True
 
 
-def is_prime_MR(n: int) -> bool:
+def is_prime(n: int) -> bool:
     """
-    Miller-Rabin primality test.
-    False means n is certainly not prime.
-    True mean n is certainly a prime for n < 3317044064679887385961981.
-    True means n is very likely a prime for larger n.
-    https://rosettacode.org/wiki/Miller%E2%80%93Rabin_primality_test#Python
+    Utilises Miller-Rabin primality test for n > 1,000,000.
+    Result is deterministic for n < 3317044064679887385961981.
+    For larger n, False means n defintely composite and True means n is very likely prime.
+    https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test
     """
+
     if n != int(n):
         return False
-    n = int(n)
-    # Miller-Rabin test for prime
-    if n < 10:
-        if n == 2 or n == 3 or n == 5 or n == 7:
-            return True
-        else:
-            return False
+
+    if n < 1_000_000:
+        # Faster for small n
+        return _is_prime_basic(n)
+
     s = 0
     d = n - 1
     while d % 2 == 0:
@@ -114,7 +119,6 @@ def is_prime_MR(n: int) -> bool:
     assert 2 ** s * d == n - 1
 
     def trial_composite(a: int) -> bool:
-        """Helper for Miller-Rabin test."""
         if pow(a, d, n) == 1:
             return False
         for i in range(s):
@@ -154,7 +158,7 @@ def is_prime_MR(n: int) -> bool:
     return True
 
 
-def euler_totient_sieve(N: int) -> list:
+def euler_totients(N: int) -> list:
     """Returns list with phi(i) at index i for i < N."""
     phi = [0] * N
     for i in range(2, N):
