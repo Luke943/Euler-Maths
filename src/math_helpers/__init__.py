@@ -1,1 +1,2 @@
-from math_helpers.functions import *
+from math_helpers.prime import *
+from math_helpers.misc import *

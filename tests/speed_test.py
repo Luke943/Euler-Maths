@@ -1,10 +1,12 @@
 """
 Speed test for prime sieves using various packages.
-1. Standard library only - Ok for small N. Returns list. Using Numba helps a lot.
-2. Numpy - Faster for larger N and more memory efficient. Returns np.ndarray.
-3. Bitarray - Fastest if returning generator and most memory efficent. (Converting to list slower.)
-
-*** INCOMPLETE ***
+1. Standard library only - Ok for small N.
+                         - Returns list.
+2. Numpy - Faster for larger N and more memory efficient.
+         - Returns np.ndarray.
+3. Bitarray - Fastest if returning generator and most memory efficent.
+            - Converting to list slower.
+            - Cannot use Numba.
 """
 
 import math
@@ -13,11 +15,12 @@ import sys
 import time
 
 import bitarray
+
 import numba
 import numpy as np
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
-from math_helpers import prime_sieve, prime_sieve_np, prime_sieve_bitarray
+from math_helpers.prime import _primes, primes, primes_iter
 
 
 def speed_test(N=10 ** 6, use_njit=False):
@@ -29,29 +32,29 @@ def speed_test(N=10 ** 6, use_njit=False):
     print("Standard lib")
     start = time.time()
     if use_njit:
-        x = numba.njit(prime_sieve)(N)
+        x = numba.njit(_primes)(N)
     else:
-        x = prime_sieve(N)
+        x = _primes(N)
     end = time.time()
-    print(f"Length:{len(x)} Size:{sys.getsizeof(x)/2**20} Time:{end - start}")
+    print(f"Size:{sys.getsizeof(x)/2**20}MB Time:{end - start}")
 
     print("Numpy")
     start = time.time()
     if use_njit:
-        y = numba.njit(prime_sieve_np)(N)
+        x = numba.njit(primes)(N)
     else:
-        y = prime_sieve_np(N)
+        x = primes(N)
     end = time.time()
-    print(f"Length:{len(y)} Size:{y.nbytes/2**20} Time:{end - start}")
+    print(f"Size:{x.nbytes/2**20}MB Time:{end - start}")
 
     print("Bitarray")
     start = time.time()
-    z = prime_sieve_bitarray(N)
+    x = primes_iter(N)
     mid = time.time()
-    z_list = [p for p in z]
+    x = [p for p, b in enumerate(x) if b]
     end = time.time()
     print(
-        f"Length:{len(z_list)} Size:~{N/(8 * 2**20)} Time1:{mid - start} Time2:{end - mid}"
+        f"Iter size:~{N/(8 * 2**20)}MB Time:{mid - start}\nList size:{sys.getsizeof(x)/2**20}MB List-conversion time:{end - mid}"
     )
 
 
