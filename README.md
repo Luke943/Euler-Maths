@@ -5,7 +5,6 @@
 A collection of useful functions for mathematical calculations, mostly concerned with prime numbers and basic algebra on natural numbers.
 
 ### Key features
-
 - Prime number sieve
 - Primality test
 - Prime factors sieve
@@ -14,7 +13,6 @@ A collection of useful functions for mathematical calculations, mostly concerned
 - Modular inverse
 
 ### Motivation
-
 The functions contained here are commonly used in solving [Project Euler](https://projecteuler.net/) problems.
 
 ![ProjectEulerProfile](https://projecteuler.net/profile/Luke943.png)
