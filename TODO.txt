@@ -1,3 +1,0 @@
-- put results in readme
-- add example usage in readme
-- upload to pypi

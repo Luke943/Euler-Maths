@@ -16,6 +16,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+dependencies = [
+  "numpy",
+  "bitarray",
+]
 
 [project.urls]
 "Homepage" = "https://github.com/Luke943/MathHelpers"

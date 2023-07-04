@@ -26,7 +26,7 @@ def euler_totient(n: int, prime_factors: iter) -> int:
 
 
 def mobius_array(N: int) -> np.ndarray:
-    """Returns array containing μ(n) at index n for n <= N."""
+    """Returns np.ndarray containing μ(n) at index n for n <= N."""
     prime = np.ones(N + 1, np.int8)
     mobius = np.ones(N + 1, np.int8)
     for i in range(2, N + 1):

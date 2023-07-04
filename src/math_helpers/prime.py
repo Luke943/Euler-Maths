@@ -81,7 +81,7 @@ def prime_factors(N: int) -> np.ndarray:
 def _is_prime_basic(n: int) -> bool:
     """
     Basic primality test using 6k+-1 optimization.
-    Recommended up to n < 10^6.
+    Called in is_prime for small n.
     """
     if n <= 3:
         return n > 1
@@ -97,6 +97,7 @@ def _is_prime_basic(n: int) -> bool:
 
 def is_prime(n: int) -> bool:
     """
+    Returns True if n is prime, else returns False.
     Utilises Miller-Rabin primality test for n > 1,000,000.
     Result is deterministic for n < 3317044064679887385961981.
     For larger n, False means n defintely composite and True means n is very likely prime.

@@ -1,8 +1,17 @@
-# Math Helper Functions
+# Math Helpers
 
 ## Description
 
 A collection of helper functions for mathematical calculations, mostly concerned with prime numbers and basic algebra on natural numbers.
+
+### Key features:
+- Prime number sieve
+- Primality test
+- Prime factors sieve
+- Euler's totient function
+- Mobius function
+- Modular inverse
+
 
 ## Module Dependencies
 
@@ -12,32 +21,48 @@ To improve execution speed and memory usage, many of the functions take advantag
 
 ## Contents
 
-- Prime number sieves:
-    1. using only the standard library
-    2. using Numpy
-    3. using Bitarray
-- Prime factor sieve
-- Primality tests:
-    1. a basic/direct test 
-    2. a Miller-Raben test (useful for large integers)
-- Euler totient function
-- Euler totient sieve
-- Square-free sieve
-- Modular inverse
 
-*For comparison of the performance of the prime sieves, see Performance Test below.*
+- `primes(N)` - Performs prime sieve and returns an array of primes <N.
+- `primes_iter(N)` - Rerforms prime sieve and returns bitarray iterator of primes <N.
+- `prime_factors(N)` - Returns array of unique prime factors for each number < N.
+- `is_prime(n)` - Determines if n is prime (utilising the Miller-Rabin test for large values).
+- `euler_totients(N)` - Returns an array with value of Euler's totient function for numbers <N.
+- `euler_totient(n, prime_factors)` - Calculates Euler's totient function of n given a list of its prime factors.
+- `mobius_array(N)` - Returns an array with value of the Mobius function for numbers <N.
+- `square_free(N)` - Counts of the number of square-free values <N.
+- `modular_inverse(a, n)` - Computes the inverse of a modulo n.
+
+
+## Installation
+
+The package can be installed from TestPyPI by running:
+```
+pip install --index-url https://test.pypi.org/simple/ math_helpers
+```
+
+## Usage
+
+Once installed, simply import the module and use the functions it provides.
+
+```python
+import math_helpers
+
+math_helpers.primes(10)
+# array([2, 3, 5, 7])
+
+math_helpers.euler_totients(10)
+# [0, 0, 1, 2, 2, 4, 2, 6, 4, 6]
+```
 
 ## Improving Performance at Runtime
 
-The functions using native Python and Numpy are designed to be compatible with the [Numba](https://numba.pydata.org/)'s JIT compiler. The exception is the version of the prime seive that uses the Bitarray module, which is not compatible with Numba.
+The functions using native Python and Numpy are designed to be compatible with the [Numba](https://numba.pydata.org/)'s JIT compiler. The only exception is `primes_iter`, which uses the Bitarray module and is not compatible with Numba.
 
-When dealing with large enough values, Numba can significantly improve execution speed compared to vanilla Python.
-
-To take advantage of this in your script, use the `numba.njit` decorator on the desired function.
+When dealing with large enough values, Numba can significantly improve execution speed compared to vanilla Python. To take advantage of this in your script, use the `numba.njit` decorator on the desired function.
 
 ## Performance Test
 
-***TODO - speed and memory test***
+***TODO - speed test***
 
 ## Motivation
 
