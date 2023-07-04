@@ -20,7 +20,7 @@ import numba
 import numpy as np
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
-from math_helpers.prime import _primes, primes, primes_iter
+from euler_maths.prime import _primes, primes, primes_iter
 
 
 def speed_test(N=10 ** 6, use_njit=False):
