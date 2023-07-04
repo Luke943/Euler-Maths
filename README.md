@@ -39,12 +39,11 @@ To improve execution speed and memory usage, many of the functions take advantag
 - `square_free(N)` - Counts of the number of square-free values <N.
 - `modular_inverse(a, n)` - Computes the inverse of a modulo n.
 
-
 ## Installation
 
-The package can be installed from TestPyPI by running:
-```
-pip install --index-url https://test.pypi.org/simple/ euler_maths
+The package can be installed from PyPI by running:
+```bash
+pip install euler-maths
 ```
 
 ## Usage
