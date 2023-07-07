@@ -42,7 +42,7 @@ def mobius_array(N: int) -> np.ndarray:
 
 def square_free(N: int) -> int:
     """Count of square free numbers <= N"""
-    sqrt_N = int(N ** 0.5)
+    sqrt_N = int(N**0.5)
     mobius = mobius_array(sqrt_N)
     s = 0
     for i in range(1, sqrt_N + 1):
@@ -63,3 +63,19 @@ def modular_inverse(a: int, n: int) -> int:
     if t < 0:
         t = t + n
     return t
+
+
+def isqrt2(y: int) -> int:
+    """
+    Integer square root (equivalent to math.isqrt) for
+    Designed for upto 64-bit int and compatible with numba
+    """
+    lower = 0
+    roof = min(y + 1, 1 << 32)  # avoid overflow
+    while roof - 1 - lower:
+        mid = (lower + roof) // 2
+        if mid * mid <= y:
+            lower = mid
+        else:
+            roof = mid
+    return lower

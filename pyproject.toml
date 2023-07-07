@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "euler_maths"
-version = "0.0.1"
+version = "0.1.0"
 authors = [
   { name="Luke Hartley", email="luke.hartley05@gmail.com" },
 ]
