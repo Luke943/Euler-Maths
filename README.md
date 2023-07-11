@@ -36,7 +36,7 @@ To improve execution speed and memory usage, many of the functions take advantag
 - `mobius_array(N)` - Returns an array with value of the Mobius function for numbers <N.
 - `square_free(N)` - Counts of the number of square-free values <N.
 - `modular_inverse(a, n)` - Computes the inverse of a modulo n.
-- `isqrt2` - Integer square-root function compatible with Numba.
+- `isqrt2(n)` - Integer square-root of n. Same functionality as the standard library `math.isqrt` function, but compatible with Numba.
 
 ## Installation
 

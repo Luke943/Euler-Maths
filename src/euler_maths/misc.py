@@ -65,16 +65,16 @@ def modular_inverse(a: int, n: int) -> int:
     return t
 
 
-def isqrt2(y: int) -> int:
+def isqrt2(n: int) -> int:
     """
-    Integer square root (equivalent to math.isqrt) for
+    Integer square root (equivalent to math.isqrt)
     Designed for upto 64-bit int and compatible with numba
     """
     lower = 0
-    roof = min(y + 1, 1 << 32)  # avoid overflow
+    roof = n // 2 + 1  # avoid overflow
     while roof - 1 - lower:
         mid = (lower + roof) // 2
-        if mid * mid <= y:
+        if mid * mid <= n:
             lower = mid
         else:
             roof = mid
