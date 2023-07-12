@@ -23,7 +23,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 from euler_maths.prime import _primes, primes, primes_iter
 
 
-def speed_test(N=10 ** 6, use_njit=False):
+def speed_test(N=10**6, use_njit=False):
     """
     Runs a speed comparison on three prime number sieves from the module.
     Output printed to console.
@@ -66,7 +66,7 @@ if __name__ == "__main__":
         try:
             N = 10 ** int(sys.argv[1])
         except:
-            N = 10 ** 6
+            N = 10**6
         if "njit" in sys.argv:
             use_njit = True
         else:

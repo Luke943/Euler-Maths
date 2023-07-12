@@ -64,3 +64,20 @@ euler_maths.euler_totients(10)
 The functions using native Python and Numpy are designed to be compatible with the [Numba](https://numba.pydata.org/)'s JIT compiler. The only exception is `primes_iter`, which uses the Bitarray module and is not compatible with Numba.
 
 When dealing with large enough values, Numba can significantly improve execution speed compared to vanilla Python. To take advantage of this in your script, use the `numba.njit` decorator on the desired function.
+
+##  Prime Sieves Speed Test
+
+Comparison of performance of various prime sieve implementations. Times are given in seconds.
+
+| $N$ | Std Lib | Numpy | Numpy with Numba | Bitarray (iterator) | Bitarray to list |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| 1,000 |0.001999 | 0.0 | - | 0.0 | 0.0 |
+| 1,000,000 | 0.148910 | 0.007995 |  - |0.001998 | 0.015990 | 
+| 10,000,000 | 1.499077 | 0.101938 | - |0.021986 | 0.105933 |
+| 100,000,000 | 16.03813 | 1.068342 | 1.928385 |0.380769 | 0.946416 | 
+| 1,000,000,000 | 180.1974 | 14.23469 | 11.39456 |5.243182 | 8.692384 |
+| 10,000,000,000 | - | 166.3705 | 133.3257 |71.00818 | 87.48354 |
+
+*All tests run with latest versions of Python 3.11 and dependent modules as of 12/07/23.*
+
+Usage of Numba helps only when sieving close to 10<sup>9</sup> integers. However, it may prove useful at lower orders depending on what further computions need to be done.
