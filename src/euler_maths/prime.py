@@ -19,7 +19,7 @@ def _primes(N: int) -> list:
     is_prime[1] = 0
     for j in range(4, N, 2):
         is_prime[j] = 0
-    for i in range(3, int(N ** 0.5) + 1, 2):
+    for i in range(3, int(N**0.5) + 1, 2):
         if is_prime[i]:
             for j in range(i * i, N, 2 * i):
                 is_prime[j] = 0
@@ -29,13 +29,12 @@ def _primes(N: int) -> list:
 def primes(N: int) -> np.ndarray:
     """
     Returns array of primes < N using Numpy.
-    Numba improves speed for N > ~10**8.
     Memory usage ~N bytes.
     """
     is_prime = np.ones(N, dtype=np.uint8)
     is_prime[:2] = 0
     is_prime[4::2] = 0
-    for i in range(3, int(N ** 0.5) + 1, 2):
+    for i in range(3, int(N**0.5) + 1, 2):
         if is_prime[i]:
             is_prime[i * i :: 2 * i] = 0
     return is_prime.nonzero()[0]
@@ -50,7 +49,7 @@ def primes_iter(N: int) -> iter:
     is_prime.setall(True)
     is_prime[:2] = False
     is_prime[4::2] = False
-    for i in range(3, int(N ** 0.5) + 1, 2):
+    for i in range(3, int(N**0.5) + 1, 2):
         if is_prime[i]:
             is_prime[i * i :: 2 * i] = False
     return is_prime.itersearch(bitarray.bitarray("1"))
@@ -88,7 +87,7 @@ def _is_prime_basic(n: int) -> bool:
     if n % 2 == 0 or n % 3 == 0:
         return False
     i = 5
-    while i ** 2 <= n:
+    while i**2 <= n:
         if n % i == 0 or n % (i + 2) == 0:
             return False
         i += 6
@@ -99,9 +98,8 @@ def is_prime(n: int) -> bool:
     """
     Returns True if n is prime, else returns False.
     Utilises Miller-Rabin primality test for n > 1,000,000.
-    Result is deterministic for n < 3317044064679887385961981.
+    Result is deterministic for n < 3,317,044,064,679,887,385,961,981.
     For larger n, False means n defintely composite and True means n is very likely prime.
-    https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test
     """
 
     if n != int(n):
@@ -116,13 +114,13 @@ def is_prime(n: int) -> bool:
     while d % 2 == 0:
         d >>= 1
         s += 1
-    assert 2 ** s * d == n - 1
+    assert 2**s * d == n - 1
 
     def trial_composite(a: int) -> bool:
         if pow(a, d, n) == 1:
             return False
         for i in range(s):
-            if pow(a, 2 ** i * d, n) == n - 1:
+            if pow(a, 2**i * d, n) == n - 1:
                 return False
         return True  # n definitely composite
 
