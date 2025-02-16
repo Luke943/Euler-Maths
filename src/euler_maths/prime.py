@@ -3,12 +3,12 @@ Functions for prime sieves and primality tests
 """
 
 import random
-
 import bitarray
 import numpy as np
+from typing import List, Iterator
 
 
-def _primes(N: int) -> list:
+def _primes(N: int) -> List[int]:
     """
     Returns list of primes < N.
     Memory usage ~8*N bytes.
@@ -40,15 +40,15 @@ def primes(N: int) -> np.ndarray:
     return is_prime.nonzero()[0]
 
 
-def primes_iter(N: int) -> iter:
+def primes_iter(N: int) -> Iterator[int]:
     """
     Returns iterable of primes < N using Bitarray.
     Memory usage ~N bits.
     """
     is_prime = bitarray.bitarray(N)
-    is_prime.setall(True)
-    is_prime[:2] = False
-    is_prime[4::2] = False
+    is_prime.setall(False)
+    is_prime[2] = True
+    is_prime[3::2] = True
     for i in range(3, int(N**0.5) + 1, 2):
         if is_prime[i]:
             is_prime[i * i :: 2 * i] = False
@@ -87,7 +87,7 @@ def _is_prime_basic(n: int) -> bool:
     if n % 2 == 0 or n % 3 == 0:
         return False
     i = 5
-    while i**2 <= n:
+    while i * i <= n:
         if n % i == 0 or n % (i + 2) == 0:
             return False
         i += 6
@@ -99,9 +99,8 @@ def is_prime(n: int) -> bool:
     Returns True if n is prime, else returns False.
     Utilises Miller-Rabin primality test for n > 1,000,000.
     Result is deterministic for n < 3,317,044,064,679,887,385,961,981.
-    For larger n, False means n defintely composite and True means n is very likely prime.
+    For larger n, False means n definitely composite and True means n is very likely prime.
     """
-
     if n != int(n):
         return False
 
@@ -147,7 +146,7 @@ def is_prime(n: int) -> bool:
     elif n < 3317044064679887385961981:
         testCases = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
     else:
-        testCases = [random.randrange(2, n) for i in range(8)]  # probablistic version
+        testCases = [random.randrange(2, n) for _ in range(8)]  # probabilistic version
 
     for a in testCases:
         if trial_composite(a):

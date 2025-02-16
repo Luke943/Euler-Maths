@@ -3,11 +3,11 @@ All other functions
 """
 
 import math
-
 import numpy as np
+from typing import List, Iterator
 
 
-def euler_totients(N: int) -> list:
+def euler_totients(N: int) -> List[int]:
     """Returns list with phi(i) at index i for i < N."""
     phi = [0] * N
     for i in range(2, N):
@@ -20,7 +20,7 @@ def euler_totients(N: int) -> list:
     return phi
 
 
-def euler_totient(n: int, prime_factors: iter) -> int:
+def euler_totient(n: int, prime_factors: Iterator[int]) -> int:
     """Given n and its prime factors, calculates Euler's totient function."""
     return int(n * math.prod(1 - 1 / p for p in prime_factors))
 
@@ -44,10 +44,7 @@ def square_free(N: int) -> int:
     """Count of square free numbers <= N"""
     sqrt_N = int(N**0.5)
     mobius = mobius_array(sqrt_N)
-    s = 0
-    for i in range(1, sqrt_N + 1):
-        s += mobius[i] * (N // (i * i))
-    return s
+    return sum(mobius[i] * (N // (i * i)) for i in range(1, sqrt_N + 1))
 
 
 def modular_inverse(a: int, n: int) -> int:
@@ -61,14 +58,14 @@ def modular_inverse(a: int, n: int) -> int:
     if r > 1:
         return 0
     if t < 0:
-        t = t + n
+        t += n
     return t
 
 
 def isqrt2(n: int) -> int:
     """
     Integer square root (equivalent to math.isqrt)
-    Designed for upto 64-bit int and compatible with numba
+    Designed for up to 64-bit int and compatible with numba
     """
     lower = 0
     roof = n // 2 + 1  # avoid overflow
